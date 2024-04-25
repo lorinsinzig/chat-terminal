@@ -1,4 +1,5 @@
 from openai import OpenAI
+import pyttsx3
 import os
 
 # Load your API key from an environment variable
@@ -9,8 +10,13 @@ if not api_key:
 
 openai = OpenAI(api_key=api_key)
 
+engine = pyttsx3.init()
 
 def chat_with_gpt():
+
+    # Set the voice to Karsten
+    engine.setProperty('voice', 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_Cortana')
+
     # Create a list to store all the messages for context
     messages = [
         {"role": "system", "content": "Du bist GPT, eine lebensechte intelligente Serviceassistentin. Du antwortest immer auf Deutsch, und immer möglichst kurz, aber bleibst trotzdem lebendig. Sie sollen im Gespräch ein möglichst menschenmögliches Erlebnis vermitteln."},
@@ -40,6 +46,8 @@ def chat_with_gpt():
         messages.append({"role": "assistant", "content": chat_message})
 
         print(f"GPT: {chat_message}")
+        engine.say(chat_message)
+        engine.runAndWait()
 
 
 if __name__ == "__main__":
